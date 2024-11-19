@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Steganography Tool</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            background-color: #333;
+            color: #fff;
+            padding: 1rem 0;
+            margin: 0;
+        }
+        .container {
+            margin: 20px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 5px;
+            max-width: 600px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        form {
+            margin: 20px 0;
+        }
+        input[type="file"], input[type="text"] {
+            margin-bottom: 10px;
+            padding: 10px;
+            width: 80%;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            background: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #218838;
+        }
+        .error, .message {
+            margin: 10px 0;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>Image Steganography Tool</h1>
+    <div class="container">
+        <h2>Hide a Message</h2>
+        <form action="/hide" method="post" enctype="multipart/form-data">
+            <input type="file" name="image" accept="image/*" required>
+            <input type="text" name="message" placeholder="Enter message to hide" required>
+            <button type="submit">Hide Message</button>
+        </form>
+
+        <h2>Retrieve a Message</h2>
+        <form action="/retrieve" method="post" enctype="multipart/form-data">
+            <input type="file" name="image" accept="image/*" required>
+            <button type="submit">Retrieve Message</button>
+        </form>
+
+        {% if hidden_message %}
+            <div class="message">
+                <h3>Hidden Message:</h3>
+                <p>{{ hidden_message }}</p>
+            </div>
+        {% elif error %}
+            <div class="error">
+                <p>{{ error }}</p>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
