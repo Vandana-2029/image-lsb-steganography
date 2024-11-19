@@ -1,0 +1,30 @@
+Steganography
+----
+Hide text message inside the image RGB values using LSB Steganography technique
+
+
+Part 1 - Hide
+----
+
+input
+---
+Image
+Text message
+
+Algorithm
+------
+convert text message into binary
+
+take each pixle of image and replace last bit of RGB value with text binary
+Each pixle will carry 3 bits of text message
+
+
+Part 2 - Unhide
+------
+input
+----
+Image
+
+Algorithm
+----
+take each pixle of image and extract last bit of RGB values to retrieve the message
