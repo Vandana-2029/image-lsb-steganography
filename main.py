@@ -1,4 +1,5 @@
 from PIL import Image
+import argparse
 
 # Part 1: Hide text message inside the image
 def hide_message(image_path, text_message, output_image_path):
@@ -85,39 +86,44 @@ def unhide_message(image_path):
     
     return text_message
 
-# Example usage
-if __name__ == "__main__":
 
-    print("What do you want?")
-    print("1) Hide message in image")
-    print("2) Retrieve message from image")
-    choice = int(input())
-    img_path = input("Image Path: ")
+# Define the functions hide_message and unhide_message here or import them
+# Example functions:
+# from steganography_tool import hide_message, unhide_message
+def main():
+    parser = argparse.ArgumentParser(description="Image Steganography Tool")
+    parser.add_argument(
+        "action",
+        choices=["hide", "retrieve"],
+        help="Choose 'hide' to hide a message or 'retrieve' to extract a hidden message.",
+    )
+    parser.add_argument("image_path", help="Path to the image file.")
+    parser.add_argument(
+        "--message",
+        help="The message to hide in the image (required for 'hide' action).",
+    )
 
-    if choice == 1:
-        msg_path = input("Message File Path: ")
+    args = parser.parse_args()
 
-        # Check if the file is a .txt file
-        if not msg_path.endswith(".txt"):
-            print("Error: The message file must be a .txt file.")
-        else:
-            # Read the content of the file into a variable
-            try:
-                with open(msg_path, "r") as file:
-                    msg = file.read()  # Read the entire file content into a string
+    if args.action == "hide":
+        if not args.message:
+            print("Error: --message is required for the 'hide' action.")
+            return
 
-                # Hide a message inside the image
-                hide_message(img_path, msg, img_path)
-                print("Message hidden successfully!")
-            except FileNotFoundError:
-                print("Error: The specified file does not exist.")
-    elif choice == 2:
+        # Hide the message in the image
         try:
-            # Extract the hidden message from the image
-            hidden_message = unhide_message(img_path)
-            print("The hidden message is:")
+            hide_message(args.image_path, args.message, args.image_path)
+        except FileNotFoundError:
+            print("Error: The specified image file does not exist.")
+    elif args.action == "retrieve":
+        # Extract the hidden message from the image
+        try:
+            hidden_message = unhide_message(args.image_path)
             print(hidden_message)
         except FileNotFoundError:
-            print("Error: The specified image does not exist.")
+            print("Error: The specified image file does not exist.")
     else:
-        print("Invalid choice. Please enter 1 or 2.")
+        print("Invalid action. Use 'hide' or 'retrieve'.")
+
+if __name__ == "__main__":
+    main()
