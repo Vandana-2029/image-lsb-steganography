@@ -87,16 +87,37 @@ def unhide_message(image_path):
 
 # Example usage
 if __name__ == "__main__":
-    # File path
-    file_path = "temp\\secret.txt"  # Replace with the path to your file
 
-    # Read the content of the file into a variable
-    with open(file_path, "r") as file:
-        secret = file.read()  # Read the entire file content into a string
+    print("What do you want?")
+    print("1) Hide message in image")
+    print("2) Retrieve message from image")
+    choice = int(input())
+    img_path = input("Image Path: ")
 
-    # Hide a message inside the image
-    hide_message('temp\\img.jpg', secret, 'output_image.png')
-    
-    # Extract the hidden message from the image
-    hidden_message = unhide_message('output_image.png')
-    print("The hidden message is:", hidden_message)
+    if choice == 1:
+        msg_path = input("Message File Path: ")
+
+        # Check if the file is a .txt file
+        if not msg_path.endswith(".txt"):
+            print("Error: The message file must be a .txt file.")
+        else:
+            # Read the content of the file into a variable
+            try:
+                with open(msg_path, "r") as file:
+                    msg = file.read()  # Read the entire file content into a string
+
+                # Hide a message inside the image
+                hide_message(img_path, msg, img_path)
+                print("Message hidden successfully!")
+            except FileNotFoundError:
+                print("Error: The specified file does not exist.")
+    elif choice == 2:
+        try:
+            # Extract the hidden message from the image
+            hidden_message = unhide_message(img_path)
+            print("The hidden message is:")
+            print(hidden_message)
+        except FileNotFoundError:
+            print("Error: The specified image does not exist.")
+    else:
+        print("Invalid choice. Please enter 1 or 2.")
